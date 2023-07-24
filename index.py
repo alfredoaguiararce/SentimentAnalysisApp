@@ -26,15 +26,16 @@ def get_inferring_prompt(input_text):
 # that the writer of a given text is expressing. The text is represented by the variable
 # `_txt_inferring`, which is enclosed in triple backticks. The user is instructed to format their
 # response as a list of enumerated items with a new line format for every item.
-_emotions_prompt = f"""
-                    Identify a list of emotions that the writer of the 
-                    following text is expressing. Include no more than 
-                    five items in the list. 
+def get_emotions_prompt(input_text):
+    return f"""
+                        Identify a list of emotions that the writer of the 
+                        following text is expressing. Include no more than 
+                        five items in the list. 
 
-                    Format your response as a list of enumerated items with new line format for every item
+                        Format your response as a list of enumerated items with new line format for every item
 
-                    text: '''{_input_text}'''
-                    """
+                        text: '''{input_text}'''
+                        """
 
 # Functions
 def get_completion(prompt, model="gpt-3.5-turbo-16k", temperature=0):
@@ -101,6 +102,18 @@ if st.button('Inferring sentiments'):
     try:
         with st.spinner('Wait for it...'):
             response = get_completion(get_inferring_prompt(_input_text), temperature=0)
+            
+        st.success('Done!')
+        st.write(response)
+        
+    except Exception as e:
+        st.error(f'This is an error : {e}', icon="🚨")
+
+if st.button('Emotions of the text'):
+    st.divider()
+    try:
+        with st.spinner('Wait for it...'):
+            response = get_completion(get_emotions_prompt(_input_text), temperature=0)
             
         st.success('Done!')
         st.write(response)
